@@ -19,6 +19,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -33,6 +34,7 @@ import com.example.allcourses.ui.theme.AppColors
 @Composable
 fun CustomTextButton(
     text: String,
+    enabled: Boolean = true,
     backgroundColor: Color = AppColors.primary,
     textColor: Color = AppColors.textPrimary,
     modifier: Modifier = Modifier,
@@ -47,7 +49,9 @@ fun CustomTextButton(
                 shape = RoundedCornerShape(50.dp)
             )
             .clickable {
-                onClick()
+                if (enabled) {
+                    onClick()
+                }
             }
     ) {
         Text(
@@ -65,6 +69,7 @@ fun CustomTextButton(
 @Composable
 fun CustomIconButton(
     painter: Painter,
+    enabled: Boolean = true,
     backgroundColor: Color = AppColors.primary,
     iconColor: Color = AppColors.textPrimary,
     modifier: Modifier = Modifier,
@@ -79,7 +84,9 @@ fun CustomIconButton(
                 shape = RoundedCornerShape(50.dp)
             )
             .clickable {
-                onClick()
+                if (enabled) {
+                    onClick()
+                }
             }
     ) {
         Icon(
@@ -150,11 +157,36 @@ fun CustomTextField(
     }
 }
 
+@Composable
+fun CourseItem(
+    title: String,
+    description: String,
+    price: String,
+    rating: String,
+    date: String,
+    hasLike: Boolean,
+    painter: Painter,
+    backgroundColor: Color = AppColors.surface,
+    onClick: () -> Unit = {},
+) {
+
+    Box(
+        modifier = Modifier
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(25.dp)
+            )
+            .clip(RoundedCornerShape(25.dp))
+            .height(250.dp)
+            .fillMaxWidth()
+    ) {
+
+    }
+}
+
 @Preview
 @Composable
-fun prev(
-
-) {
+fun prev() {
     Column(
         modifier = Modifier
             .fillMaxSize()

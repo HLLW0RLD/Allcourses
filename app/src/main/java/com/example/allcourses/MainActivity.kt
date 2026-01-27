@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.allcourses.data.UserStorage
 import com.example.allcourses.ui.screen.BottomBarState
 import com.example.allcourses.ui.screen.LocalBottomBarState
 import com.example.allcourses.ui.screen.Login
@@ -45,9 +46,8 @@ class MainActivity : ComponentActivity() {
                 var isInitialized by remember { mutableStateOf(false) }
 
                 LaunchedEffect(Unit) {
-//                    val user = PersonalDataManager.getUser()
-//                    startRoute = if (user != null) MainFeed else Login
-                    startRoute = Login
+                    val user = UserStorage.getUser()
+                    startRoute = if (user != null) MainFeed else Login
                     isInitialized = true
                 }
 

@@ -31,6 +31,7 @@ import com.example.allcourses.ui.CustomTextButton
 import com.example.allcourses.ui.CustomTextField
 import com.example.allcourses.ui.theme.AppColors
 import com.example.allcourses.utils.LocalNavController
+import com.example.allcourses.utils.isValidEmail
 import com.example.allcourses.utils.openLink
 import kotlinx.serialization.Serializable
 
@@ -87,6 +88,7 @@ fun LoginScreen() {
         Spacer(Modifier.size(24.dp))
         CustomTextButton(
             text = stringResource(R.string.enter_title),
+            enabled = isValidEmail(email),
             modifier = Modifier.fillMaxWidth()
         ) {
             nav.nav(MainFeed)
