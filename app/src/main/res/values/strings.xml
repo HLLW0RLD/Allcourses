@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Allcourses</string>
+    <string name="enter_title">Вход</string>
+    <string name="email_title">Email</string>
+    <string name="email_placeholder">example@gmail.com</string>
+    <string name="password_title">Пароль</string>
+    <string name="password_placeholder">Введите пароль</string>
+    <string name="registration_clue">Нет аккаунта?</string>
+    <string name="registration">Регитрация</string>
+    <string name="password_clue">Забыл пароль</string>
+</resources>
