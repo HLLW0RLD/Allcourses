@@ -29,17 +29,21 @@ import com.example.allcourses.R
 import com.example.allcourses.ui.CustomIconButton
 import com.example.allcourses.ui.CustomTextButton
 import com.example.allcourses.ui.CustomTextField
+import com.example.allcourses.ui.screen.viewModel.LoginViewModel
 import com.example.allcourses.ui.theme.AppColors
 import com.example.allcourses.utils.LocalNavController
 import com.example.allcourses.utils.isValidEmail
 import com.example.allcourses.utils.openLink
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 object Login : Screen
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    loginViewModel: LoginViewModel = koinViewModel()
+) {
 
     val context = LocalContext.current
     val nav = LocalNavController.current
@@ -60,7 +64,7 @@ fun LoginScreen() {
                 .fillMaxWidth()
                 .height(36.dp),
             text = stringResource(R.string.enter_title),
-            fontSize = 28.sp,
+            fontSize = 36.sp,
             color = AppColors.textPrimary,
             textAlign = TextAlign.Start
         )
@@ -88,9 +92,10 @@ fun LoginScreen() {
         Spacer(Modifier.size(24.dp))
         CustomTextButton(
             text = stringResource(R.string.enter_title),
-            enabled = isValidEmail(email),
+            enabled = isValidEmail(email) && password.isNotBlank(),
             modifier = Modifier.fillMaxWidth()
         ) {
+            loginViewModel.saveUser(email, password)
             nav.nav(MainFeed)
         }
 

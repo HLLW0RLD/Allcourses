@@ -1,4 +1,4 @@
-package com.example.allcourses.data
+package com.example.allcourses.data.model
 
 data class UserData(
     val email: String,

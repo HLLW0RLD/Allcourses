@@ -26,7 +26,7 @@ fun logSuccess(
         msg = msg,
         fixedLabel = LogType.SUCCESS,
         logColor = tagColorMap[LogType.SUCCESS] ?: LogColor.GREEN,
-        resolvedTag = resolvedTag ?: "Success"
+        resolvedTag = resolvedTag ?: "SuccessLogTag"
     )
 }
 
@@ -38,7 +38,7 @@ fun logError(
         msg = msg,
         fixedLabel = LogType.ERROR,
         logColor = tagColorMap[LogType.ERROR] ?: LogColor.RED,
-        resolvedTag = resolvedTag ?: "Error"
+        resolvedTag = resolvedTag ?: "ErrorLogTag"
     )
 }
 

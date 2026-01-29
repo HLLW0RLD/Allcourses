@@ -8,4 +8,5 @@
     <string name="registration_clue">Нет аккаунта?</string>
     <string name="registration">Регитрация</string>
     <string name="password_clue">Забыл пароль</string>
+    <string name="more_info">Подробнее ➜</string>
 </resources>

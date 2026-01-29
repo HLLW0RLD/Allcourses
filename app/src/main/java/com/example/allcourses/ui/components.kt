@@ -1,14 +1,18 @@
 package com.example.allcourses.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,8 +27,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +52,7 @@ fun CustomTextButton(
         modifier = modifier
             .height(48.dp)
             .background(
-                color = backgroundColor,
+                color = if (enabled) backgroundColor else backgroundColor.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(50.dp)
             )
             .clickable {
@@ -165,22 +172,119 @@ fun CourseItem(
     rating: String,
     date: String,
     hasLike: Boolean,
-    painter: Painter,
+    painter: Painter = painterResource(R.drawable.default_course_img),
     backgroundColor: Color = AppColors.surface,
     onClick: () -> Unit = {},
+    onFavorites: () -> Unit = {},
 ) {
 
-    Box(
+    Column(
         modifier = Modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(25.dp)
+                shape = RoundedCornerShape(16.dp)
             )
-            .clip(RoundedCornerShape(25.dp))
-            .height(250.dp)
+            .clip(RoundedCornerShape(16.dp))
             .fillMaxWidth()
     ) {
+        Box {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(145.dp)
+                    .align(Alignment.TopCenter)
+                    .clip(RoundedCornerShape(16.dp)),
+                painter = painter,
+                contentDescription = null
+            )
+            Box(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(32.dp)
+                    .align(Alignment.TopEnd)
+                    .background(
+                        color = AppColors.surface.copy(alpha = 0.4f),
+                        shape = CircleShape
+                    )
+                    .clip(CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = if (hasLike) painterResource(R.drawable.ic_favorites_checked) else painterResource(R.drawable.ic_favorites),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            onFavorites()
+                        },
+                    tint = if (hasLike) AppColors.primary else AppColors.white
+                )
+            }
 
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+//                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = title,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = AppColors.textPrimary,
+                textAlign = TextAlign.Start
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = description,
+                fontSize = 14.sp,
+                color = AppColors.textSecondary,
+                textAlign = TextAlign.Start,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = price +  " ₽",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AppColors.textPrimary,
+                    textAlign = TextAlign.Start
+                )
+
+                Text(
+                    modifier = Modifier
+                        .clickable  {
+                            onClick()
+                        },
+                    text = stringResource(R.string.more_info),
+                    fontSize = 14.sp,
+                    color = AppColors.primary,
+                    textAlign = TextAlign.Start
+                )
+            }
+        }
     }
 }
 

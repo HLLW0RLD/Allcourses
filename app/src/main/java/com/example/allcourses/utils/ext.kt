@@ -8,18 +8,11 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavController
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-
-internal fun Context.findActivity(): ComponentActivity {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is ComponentActivity) return context
-        context = context.baseContext
-    }
-    throw IllegalStateException("Picture in picture should be called in the context of an Activity")
-}
 
 val LocalNavController =
     staticCompositionLocalOf<NavController> { throw IllegalStateException("No NavController found") }
@@ -48,4 +41,16 @@ fun isValidEmail(email: String): Boolean {
         isValid = true
     }
     return isValid
+}
+
+fun parseDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
+
+        val date = inputFormat.parse(dateString)
+        outputFormat.format(date!!)
+    } catch (e: Exception) {
+        dateString
+    }
 }
