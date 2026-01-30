@@ -109,7 +109,9 @@ fun MainFeedScreen(
 
                             },
                             onFavorites = {
-
+                                if (course != null) {
+                                    mainFeedViewModel.addToFavorites(course)
+                                }
                             }
                         )
                         Spacer(Modifier.size(12.dp))

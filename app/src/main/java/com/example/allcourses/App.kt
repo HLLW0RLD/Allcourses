@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.allcourses.data.di.apiModule
+import com.example.allcourses.data.di.dbModule
 import com.example.allcourses.data.di.repoModule
 import com.example.allcourses.data.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -22,8 +23,8 @@ class App : Application()  {
             modules(
                 apiModule,
                 viewModelModule,
-                repoModule
-//                dbModule,
+                repoModule,
+                dbModule,
             )
         }
     }

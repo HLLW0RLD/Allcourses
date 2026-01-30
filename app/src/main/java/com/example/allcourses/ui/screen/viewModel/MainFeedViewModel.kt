@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.allcourses.data.model.Course
 import com.example.allcourses.data.repo.CoursesRepository
+import com.example.allcourses.data.repo.FavoritesRepository
 import com.example.allcourses.utils.logError
 import com.example.allcourses.utils.logSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainFeedViewModel(
-    private val repository: CoursesRepository
+    private val coursesRepository: CoursesRepository,
+    private val favoritesRepository: FavoritesRepository
 ): ViewModel() {
 
     private val _courses = MutableStateFlow<CoursesStatus>(CoursesStatus.Loading)
@@ -19,11 +21,17 @@ class MainFeedViewModel(
 
     private var originalCourses: List<Course>? = null
 
+    fun addToFavorites(course: Course) {
+        viewModelScope.launch {
+            favoritesRepository.saveCourses(course)
+        }
+    }
+
     fun getCourses() {
         viewModelScope.launch {
             _courses.value = CoursesStatus.Loading
 
-            repository.getCourses().fold(
+            coursesRepository.getCourses().fold(
                 onSuccess = { coursesList ->
                     originalCourses = coursesList
                     _courses.value = CoursesStatus.Success(coursesList)
