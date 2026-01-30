@@ -7,6 +7,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.text.capitalize
 import androidx.navigation.NavController
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -49,7 +50,21 @@ fun parseDate(dateString: String): String {
         val outputFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
 
         val date = inputFormat.parse(dateString)
-        outputFormat.format(date!!)
+        val formatted = outputFormat.format(date!!)
+
+        val pattern = Regex("""(\d+)\s+([а-яё]+)\s+(\d+)""")
+
+        return pattern.replace(formatted) { matchResult ->
+            val day = matchResult.groupValues[1]
+            val month = matchResult.groupValues[2]
+            val year = matchResult.groupValues[3]
+
+            val capitalizedMonth = month.replaceFirstChar {
+                it.titlecase(Locale("ru"))
+            }
+
+            "$day $capitalizedMonth $year"
+        }
     } catch (e: Exception) {
         dateString
     }

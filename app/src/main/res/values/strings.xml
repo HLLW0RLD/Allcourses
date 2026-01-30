@@ -9,4 +9,7 @@
     <string name="registration">Регитрация</string>
     <string name="password_clue">Забыл пароль</string>
     <string name="more_info">Подробнее ➜</string>
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="account">Аккаунт</string>
 </resources>

@@ -38,13 +38,11 @@ fun Screen.route(): String {
 }
 
 fun NavController.nav(
-    screen : Screen,
-    noHistory: Boolean = false
+    screen : Screen
 ) {
     val route = screen.route()
     val page = route.substringBefore("/")
-    val current =
-        currentBackStackEntry?.destination?.route?.substringBefore("/") ?: ""
+    val current = currentBackStackEntry?.destination?.route?.substringBefore("/") ?: ""
 
     if (page == current) {
         return
@@ -52,31 +50,6 @@ fun NavController.nav(
 
     navigate(route) {
         launchSingleTop = true
-        if (noHistory) popUpTo(graph.startDestinationId) { inclusive = true }
-    }
-}
-
-private var lastPopTimestamp = 0L
-fun NavController.popBack(
-    to: Screen? = null,
-    inclusive: Boolean = false,
-    minIntervalMs: Long = 300,
-    onComplete: (() -> Unit)? = null
-) {
-    val now = System.currentTimeMillis()
-    if (now - lastPopTimestamp < minIntervalMs) return
-    lastPopTimestamp = now
-
-    val route = to?.route()?.substringBefore("/")
-
-    val popped = if (route == null) {
-        popBackStack()
-    } else {
-        popBackStack(route, inclusive)
-    }
-
-    if (popped) {
-        onComplete?.invoke()
     }
 }
 

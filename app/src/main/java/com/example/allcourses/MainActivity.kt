@@ -7,8 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,12 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.allcourses.data.storage.UserStorage
 import com.example.allcourses.ui.screen.BottomBarState
+import com.example.allcourses.ui.screen.FavoritesCourses
+import com.example.allcourses.ui.screen.FavoritesCoursesScreen
 import com.example.allcourses.ui.screen.LocalBottomBarState
 import com.example.allcourses.ui.screen.Login
 import com.example.allcourses.ui.screen.LoginScreen
@@ -69,11 +77,14 @@ class MainActivity : ComponentActivity() {
                     LocalBottomBarState provides bottomBarState
                 ){
                     Box(
-                        Modifier.fillMaxSize(),
+                        Modifier
+                            .statusBarsPadding()
+                            .fillMaxSize(),
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = startRoute!!.route()
+                            startDestination = startRoute!!.route(),
+                            modifier = Modifier.padding(bottom = 72.dp)
                         ) {
 
                             animatedScreenComposable<Login>(
@@ -83,6 +94,10 @@ class MainActivity : ComponentActivity() {
                             animatedScreenComposable<MainFeed>(
                                 navController = navController,
                             ) { MainFeedScreen() }
+
+                            animatedScreenComposable<FavoritesCourses>(
+                                navController = navController,
+                            ) { FavoritesCoursesScreen() }
                         }
 
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -91,7 +106,7 @@ class MainActivity : ComponentActivity() {
                         if (currentRoute in listOf(
                                 MainFeed.route(),
                                 Login.route(),
-//                            MainFeed
+                                FavoritesCourses.route(),
                             )
                         ) {
                             BottomNavBar(
@@ -114,40 +129,93 @@ fun BottomNavBar(
     val navController = LocalNavController.current
 
     NavigationBar(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
         containerColor = AppColors.surface,
     ) {
         NavigationBarItem(
             selected = currentRoute == MainFeed.route(),
             onClick = {
-                if (currentRoute != MainFeed.route()) {
-                    navController.nav(MainFeed)
-                }
+                navController.nav(MainFeed)
             },
-            icon = { painterResource(R.drawable.ic_favorites_checked) },
-            label = { Text("Главная") }
+            icon = {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp),
+                    painter = painterResource(R.drawable.ic_home),
+                    contentDescription = null,
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.main),
+                )
+            },
+            colors = NavigationBarItemColors(
+                selectedIconColor = AppColors.primary,
+                selectedTextColor = AppColors.primary,
+                unselectedIconColor = AppColors.white,
+                unselectedTextColor = AppColors.white,
+                selectedIndicatorColor = AppColors.surface,
+                disabledIconColor = AppColors.white,
+                disabledTextColor = AppColors.white,
+            )
         )
 
         NavigationBarItem(
-            selected = currentRoute == Login.route(),
+            selected = currentRoute == FavoritesCourses.route(),
             onClick = {
-                if (currentRoute != Login.route()) {
-                    navController.nav(Login)
-                }
+                navController.nav(FavoritesCourses)
             },
-            icon = { painterResource(R.drawable.ic_favorites_checked) },
-            label = { Text("Избранное") }
+            icon = {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp),
+                    painter = painterResource(R.drawable.ic_favorites),
+                    contentDescription = null,
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.favorites),
+                )
+            },
+            colors = NavigationBarItemColors(
+                selectedIconColor = AppColors.primary,
+                selectedTextColor = AppColors.primary,
+                unselectedIconColor = AppColors.white,
+                unselectedTextColor = AppColors.white,
+                selectedIndicatorColor = AppColors.surface,
+                disabledIconColor = AppColors.white,
+                disabledTextColor = AppColors.white,
+            )
         )
 
-//        NavigationBarItem(
-//            selected = currentRoute == Screen.Profile.route,
-//            onClick = {
-//                if (currentRoute != Screen.Profile.route) {
-//                    navController.nav(Screen.Profile.route)
-//                }
-//            },
-//            icon = { painterResource(R.drawable.ic_favorites_checked) },
-//            label = { Text("Профиль") }
-//        )
+        NavigationBarItem(
+            selected = false,
+            onClick = {},
+            icon = {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp),
+                    painter = painterResource(R.drawable.ic_profile),
+                    contentDescription = null,
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.account),
+                )
+            },
+            colors = NavigationBarItemColors(
+                selectedIconColor = AppColors.primary,
+                selectedTextColor = AppColors.primary,
+                unselectedIconColor = AppColors.white,
+                unselectedTextColor = AppColors.white,
+                selectedIndicatorColor = AppColors.surface,
+                disabledIconColor = AppColors.white,
+                disabledTextColor = AppColors.white,
+            )
+        )
     }
 }

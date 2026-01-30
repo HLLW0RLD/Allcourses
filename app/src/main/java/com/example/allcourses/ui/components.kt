@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.allcourses.R
 import com.example.allcourses.ui.theme.AppColors
+import com.example.allcourses.utils.parseDate
 
 @Composable
 fun CustomTextButton(
@@ -165,6 +168,81 @@ fun CustomTextField(
 }
 
 @Composable
+fun CustomSearchField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String = "Search courses...",
+    backgroundColor: Color = AppColors.surface,
+    enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = AppColors.textSecondary
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.search),
+                    contentDescription = null,
+                    tint = AppColors.white
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = backgroundColor,
+                unfocusedContainerColor = backgroundColor,
+                focusedTextColor = AppColors.textPrimary,
+                unfocusedTextColor = AppColors.textPrimary,
+                focusedPlaceholderColor = AppColors.textSecondary,
+                unfocusedPlaceholderColor = AppColors.textSecondary,
+
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            ),
+            modifier = Modifier
+                .width(350.dp),
+            enabled = enabled,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            visualTransformation = visualTransformation,
+            singleLine = true,
+            shape = RoundedCornerShape(50.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(
+                    color = AppColors.surface,
+                    shape = CircleShape
+                )
+                .size(56.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.filter),
+                contentDescription = null,
+                tint = AppColors.white
+            )
+        }
+    }
+}
+
+@Composable
 fun CourseItem(
     title: String,
     description: String,
@@ -225,10 +303,47 @@ fun CourseItem(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(8.dp),
 //                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                Row(
+                    modifier = Modifier
+                        .background(
+                            color = backgroundColor.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .clip(RoundedCornerShape(16.dp))
+                        .padding(horizontal = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(16.dp),
+                        painter = painterResource(R.drawable.star),
+                        contentDescription = null,
+                        tint = AppColors.primary
+                    )
+                    Spacer(Modifier.size(2.dp))
+                    Text(
+                        modifier = Modifier,
+                        text = rating,
+                        color = AppColors.textPrimary
+                    )
+                }
 
+                Spacer(Modifier.size(6.dp))
+
+                Text(
+                    modifier = Modifier
+                        .background(
+                            color = backgroundColor.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .clip(RoundedCornerShape(16.dp))
+                        .padding(horizontal = 6.dp),
+                    text = parseDate(date),
+                    color = AppColors.textPrimary
+                )
             }
         }
 
@@ -296,12 +411,18 @@ fun prev() {
             .fillMaxSize()
             .background(
                 color = AppColors.background
-            )
+            ),
+        verticalArrangement = Arrangement.SpaceAround
     ) {
         CustomTextField(
             value = "",
             label = "label",
             placeholder = "placeholder",
+            onValueChange = {}
+        )
+
+        CustomSearchField(
+            value = "",
             onValueChange = {}
         )
 

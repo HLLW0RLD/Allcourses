@@ -17,21 +17,37 @@ class MainFeedViewModel(
     private val _courses = MutableStateFlow<CoursesStatus>(CoursesStatus.Loading)
     val courses = _courses.asStateFlow()
 
+    private var originalCourses: List<Course>? = null
+
     fun getCourses() {
         viewModelScope.launch {
             _courses.value = CoursesStatus.Loading
 
             repository.getCourses().fold(
                 onSuccess = { coursesList ->
+                    originalCourses = coursesList
                     _courses.value = CoursesStatus.Success(coursesList)
+
                     logSuccess("downloaded:\n${_courses.value}")
                 },
                 onFailure = { err ->
                     _courses.value = CoursesStatus.Error
+
                     logError(err)
                 }
             )
         }
+    }
+
+    fun sortCoursesByDate(descending: Boolean) {
+        val currentCourses = originalCourses ?: return
+
+        val sorted = if (descending) {
+            currentCourses.sortedByDescending { it.publishDate }
+        } else {
+            currentCourses.sortedBy { it.publishDate }
+        }
+        _courses.value = CoursesStatus.Success(sorted)
     }
 }
 
